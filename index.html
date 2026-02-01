@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>হ্যাবিট ট্র্যাকার - সম্পূর্ণ সক্রিয়</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Success Alert -->
+        <div id="success-alert" class="alert-success" style="display: none;">
+            <i class="fas fa-check-circle"></i>
+            <span id="success-text"></span>
+        </div>
+        
+        <!-- Confirmation Modal -->
+        <div id="confirmation-modal" class="modal-overlay">
+            <div class="modal-content" style="max-width: 400px;">
+                <div class="modal-header">
+                    <h3 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>নিশ্চিত করুন</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmation-message">আপনি কি নিশ্চিত?</p>
+                    <div class="confirmation-buttons">
+                        <button id="confirm-yes" class="btn btn-danger">হ্যাঁ</button>
+                        <button id="confirm-no" class="btn btn-secondary">না</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Header Section -->
+        <div class="header-section">
+            <h1><i class="fas fa-chart-line me-2"></i> হ্যাবিট ট্র্যাকার</h1>
+            <div class="quote">"নিয়মিত অভ্যাসই সফলতার মূল চাবিকাঠি"</div>
+        </div>
+        
+        <!-- Date Navigation -->
+        <div class="date-navigation">
+            <button id="prev-day-btn" class="nav-btn" title="গতকাল">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <div style="flex: 1;">
+                <div class="current-date" id="current-date-display">আজ, 2 ফেব্রুয়ারি 2026</div>
+                <div class="date-label" id="date-label">আজকের তারিখ</div>
+            </div>
+            
+            <button id="today-btn" class="nav-btn" title="আজকে">
+                <i class="fas fa-calendar-day"></i>
+            </button>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="completed-today">0</div>
+                <div class="stat-label">আজ সম্পন্ন</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="total-habits">0</div>
+                <div class="stat-label">মোট হ্যাবিট</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="current-streak">0</div>
+                <div class="stat-label">বর্তমান স্ট্রীক</div>
+            </div>
+        </div>
+        
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <div class="progress-title">আজকের অগ্রগতি</div>
+            <div class="progress-subtitle" id="progress-subtitle">আপনার হ্যাবিট সম্পন্ন করুন</div>
+            
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar-fill" style="width: 0%"></div>
+            </div>
+            
+            <div class="progress-stats">
+                <span id="progress-completed">0 সম্পন্ন</span>
+                <span id="progress-total">0 মোট</span>
+            </div>
+        </div>
+        
+        <!-- Habits Section -->
+        <div class="habits-section">
+            <div class="section-header">
+                <div class="section-title">আজকের হ্যাবিটগুলো</div>
+                <button id="add-habit-btn" class="add-habit-btn">
+                    <i class="fas fa-plus me-1"></i>হ্যাবিট যোগ
+                </button>
+            </div>
+            
+            <div id="habits-list">
+                <!-- Habits will be loaded here -->
+                <div class="empty-state">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h5>হ্যাবিট লোড হচ্ছে...</h5>
+                    <p>অনুগ্রহ করে একটু অপেক্ষা করুন</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button id="toggle-all-btn" class="action-btn">
+                <i class="fas fa-check-double"></i>সব হ্যাবিট চেক/আনচেক
+            </button>
+            <button id="view-history-btn" class="action-btn secondary">
+                <i class="fas fa-history"></i>ইতিহাস দেখুন
+            </button>
+        </div>
+    </div>
+
+    <!-- Add/Edit Habit Modal -->
+    <div id="habit-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-plus-circle me-2"></i><span id="modal-title">নতুন হ্যাবিট যোগ করুন</span></h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="habit-form">
+                <input type="hidden" id="habit-id" value="">
+                <div class="form-group">
+                    <label class="form-label">হ্যাবিটের নাম *</label>
+                    <input type="text" id="habit-name" class="form-control" placeholder="উদাহরণ: ফজর নামাজ" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">এমোজি নির্বাচন করুন</label>
+                    <div class="emoji-grid">
+                        <div class="emoji-option" data-emoji="☀️">☀️</div>
+                        <div class="emoji-option" data-emoji="📚">📚</div>
+                        <div class="emoji-option" data-emoji="🕌">🕌</div>
+                        <div class="emoji-option" data-emoji="💼">💼</div>
+                        <div class="emoji-option" data-emoji="💻">💻</div>
+                        <div class="emoji-option" data-emoji="😴">😴</div>
+                        <div class="emoji-option" data-emoji="📱">📱</div>
+                        <div class="emoji-option" data-emoji="👂">👂</div>
+                        <div class="emoji-option" data-emoji="🗣️">🗣️</div>
+                        <div class="emoji-option" data-emoji="🍽️">🍽️</div>
+                        <div class="emoji-option" data-emoji="🚫">🚫</div>
+                        <div class="emoji-option" data-emoji="😊">😊</div>
+                    </div>
+                    <input type="hidden" id="selected-emoji" value="📝">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">সময় (ঐচ্ছিক)</label>
+                    <div class="time-inputs">
+                        <div>
+                            <label class="form-label small">শুরু সময়</label>
+                            <input type="time" id="start-time" class="form-control">
+                        </div>
+                        <div>
+                            <label class="form-label small">শেষ সময়</label>
+                            <input type="time" id="end-time" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">বর্ণনা (ঐচ্ছিক)</label>
+                    <textarea id="habit-description" class="form-control" rows="3" placeholder="হ্যাবিট সম্পর্কে সংক্ষিপ্ত বর্ণনা"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">ক্যাটেগরি</label>
+                    <select id="habit-category" class="form-control">
+                        <option value="spiritual">আধ্যাত্মিক</option>
+                        <option value="study">পড়াশোনা</option>
+                        <option value="work">কাজ</option>
+                        <option value="health">স্বাস্থ্য</option>
+                        <option value="personal">ব্যক্তিগত</option>
+                        <option value="other">অন্যান্য</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="action-btn" style="width: 100%; margin-top: 10px;">
+                    <i class="fas fa-save me-2"></i><span id="modal-submit-btn">হ্যাবিট সংরক্ষণ করুন</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="history-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-history me-2"></i>হ্যাবিট ইতিহাস</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="history-content">
+                <div class="empty-state">
+                    <i class="fas fa-chart-bar"></i>
+                    <h5>ইতিহাস লোড হচ্ছে...</h5>
+                    <p>আপনার হ্যাবিট ইতিহাস এখানে দেখা যাবে</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
