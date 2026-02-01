@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>হ্যাবিট ট্র্যাকার - সম্পূর্ণ সক্রিয়</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #006B3D;
+            --primary-light: #e8f5f0;
+            --warning-color: #f7c118;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Segoe UI', 'Kalpurush', 'SolaimanLipi', sans-serif;
+            padding-bottom: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, var(--primary-color), #004d2a);
+            color: white;
+            border-radius: var(--radius);
+            margin-top: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .header-section h1 {
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .header-section .quote {
+            font-style: italic;
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        
+        .date-navigation {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .current-date {
+            font-weight: 700;
+            color: var(--dark-color);
+            font-size: 1.3rem;
+            text-align: center;
+        }
+        
+        .date-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 5px;
+        }
+        
+        .nav-btn {
+            background-color: var(--primary-light);
+            border: none;
+            color: var(--primary-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+        
+        .nav-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--primary-color);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin: 5px 0;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .progress-section {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .progress-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+        
+        .progress-subtitle {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar-container {
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            background: linear-gradient(90deg, var(--primary-color), #00a05e);
+        }
+        
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .habits-section {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            font-weight: 700;
+            color: var(--dark-color);
+            font-size: 1.3rem;
+        }
+        
+        .add-habit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .add-habit-btn:hover {
+            background-color: #00532e;
+        }
+        
+        .habit-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .habit-item:last-child {
+            border-bottom: none;
+        }
+        
+        .habit-checkbox {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            margin-right: 15px;
+        }
+        
+        .habit-checkbox.checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        
+        .habit-checkbox i {
+            font-size: 0.8rem;
+            display: none;
+        }
+        
+        .habit-checkbox.checked i {
+            display: block;
+        }
+        
+        .habit-details {
+            flex: 1;
+        }
+        
+        .habit-name {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 3px;
+        }
+        
+        .habit-time {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        .habit-emoji {
+            font-size: 1.3rem;
+            margin-right: 10px;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .action-btn:hover {
+            background-color: #00532e;
+            transform: translateY(-2px);
+        }
+        
+        .action-btn.secondary {
+            background-color: #6c757d;
+        }
+        
+        .action-btn.secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 15px;
+            display: none;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 15px;
+        }
+        
+        .modal-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: #6c757d;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .emoji-option {
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .emoji-option:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .emoji-option.selected {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .time-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+        
+        .empty-state i {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: #ced4da;
+        }
+        
+        .empty-state h5 {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .empty-state p {
+            font-size: 0.95rem;
+        }
+        
+        @media (max-width: 767px) {
+            .header-section h1 {
+                font-size: 1.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .stat-value {
+                font-size: 1.8rem;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .emoji-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .time-inputs {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Animation for checkbox */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 0.3s ease;
+        }
+        
+        /* Success message */
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--success-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .alert-success i {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Success Alert -->
+        <div id="success-alert" class="alert-success" style="display: none;">
+            <i class="fas fa-check-circle"></i>
+            <span id="success-text"></span>
+        </div>
+        
+        <!-- Header Section -->
+        <div class="header-section">
+            <h1><i class="fas fa-chart-line me-2"></i> হ্যাবিট ট্র্যাকার</h1>
+            <div class="quote">"নিয়মিত অভ্যাসই সফলতার মূল চাবিকাঠি"</div>
+        </div>
+        
+        <!-- Date Navigation -->
+        <div class="date-navigation">
+            <button id="prev-day-btn" class="nav-btn" title="গতকাল">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <div style="flex: 1;">
+                <div class="current-date" id="current-date-display">আজ, 2 ফেব্রুয়ারি 2026</div>
+                <div class="date-label" id="date-label">আজকের তারিখ</div>
+            </div>
+            
+            <button id="today-btn" class="nav-btn" title="আজকে">
+                <i class="fas fa-calendar-day"></i>
+            </button>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="completed-today">0</div>
+                <div class="stat-label">আজ সম্পন্ন</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="total-habits">0</div>
+                <div class="stat-label">মোট হ্যাবিট</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="current-streak">0</div>
+                <div class="stat-label">বর্তমান স্ট্রীক</div>
+            </div>
+        </div>
+        
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <div class="progress-title">আজকের অগ্রগতি</div>
+            <div class="progress-subtitle" id="progress-subtitle">আপনার হ্যাবিট সম্পন্ন করুন</div>
+            
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar-fill" style="width: 0%"></div>
+            </div>
+            
+            <div class="progress-stats">
+                <span id="progress-completed">0 সম্পন্ন</span>
+                <span id="progress-total">0 মোট</span>
+            </div>
+        </div>
+        
+        <!-- Habits Section -->
+        <div class="habits-section">
+            <div class="section-header">
+                <div class="section-title">আজকের হ্যাবিটগুলো</div>
+                <button id="add-habit-btn" class="add-habit-btn">
+                    <i class="fas fa-plus me-1"></i>হ্যাবিট যোগ
+                </button>
+            </div>
+            
+            <div id="habits-list">
+                <!-- Habits will be loaded here -->
+                <div class="empty-state">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h5>হ্যাবিট লোড হচ্ছে...</h5>
+                    <p>অনুগ্রহ করে একটু অপেক্ষা করুন</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button id="toggle-all-btn" class="action-btn">
+                <i class="fas fa-check-double"></i>সব হ্যাবিট চেক/আনচেক
+            </button>
+            <button id="view-history-btn" class="action-btn secondary">
+                <i class="fas fa-history"></i>ইতিহাস দেখুন
+            </button>
+        </div>
+    </div>
+
+    <!-- Add Habit Modal -->
+    <div id="add-habit-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-plus-circle me-2"></i>নতুন হ্যাবিট যোগ করুন</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="add-habit-form">
+                <div class="form-group">
+                    <label class="form-label">হ্যাবিটের নাম *</label>
+                    <input type="text" id="habit-name" class="form-control" placeholder="উদাহরণ: ফজর নামাজ" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">এমোজি নির্বাচন করুন</label>
+                    <div class="emoji-grid">
+                        <div class="emoji-option" data-emoji="☀️">☀️</div>
+                        <div class="emoji-option" data-emoji="📚">📚</div>
+                        <div class="emoji-option" data-emoji="🕌">🕌</div>
+                        <div class="emoji-option" data-emoji="💼">💼</div>
+                        <div class="emoji-option" data-emoji="💻">💻</div>
+                        <div class="emoji-option" data-emoji="😴">😴</div>
+                        <div class="emoji-option" data-emoji="📱">📱</div>
+                        <div class="emoji-option" data-emoji="👂">👂</div>
+                        <div class="emoji-option" data-emoji="🗣️">🗣️</div>
+                        <div class="emoji-option" data-emoji="🍽️">🍽️</div>
+                        <div class="emoji-option" data-emoji="🚫">🚫</div>
+                        <div class="emoji-option" data-emoji="😊">😊</div>
+                    </div>
+                    <input type="hidden" id="selected-emoji" value="📝">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">সময় (ঐচ্ছিক)</label>
+                    <div class="time-inputs">
+                        <div>
+                            <label class="form-label small">শুরু সময়</label>
+                            <input type="time" id="start-time" class="form-control">
+                        </div>
+                        <div>
+                            <label class="form-label small">শেষ সময়</label>
+                            <input type="time" id="end-time" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">বর্ণনা (ঐচ্ছিক)</label>
+                    <textarea id="habit-description" class="form-control" rows="3" placeholder="হ্যাবিট সম্পর্কে সংক্ষিপ্ত বর্ণনা"></textarea>
+                </div>
+                
+                <button type="submit" class="action-btn" style="width: 100%; margin-top: 10px;">
+                    <i class="fas fa-save me-2"></i>হ্যাবিট সংরক্ষণ করুন
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="history-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-history me-2"></i>হ্যাবিট ইতিহাস</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="history-content">
+                <div class="empty-state">
+                    <i class="fas fa-chart-bar"></i>
+                    <h5>ইতিহাস লোড হচ্ছে...</h5>
+                    <p>আপনার হ্যাবিট ইতিহাস এখানে দেখা যাবে</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ============================================
+        // COMPLETE HABIT TRACKER - ALL FEATURES WORKING
+        // ============================================
+
+        // ডিফল্ট হ্যাবিট ডেটা
+        const DEFAULT_HABITS = [
+            { id: 1, name: "ফজর নামাজ", emoji: "☀️", startTime: "05:00", endTime: "06:00", category: "spiritual" },
+            { id: 2, name: "ফজরের পর ২ ঘণ্টা পড়াশোনা", emoji: "📚", startTime: "06:30", endTime: "08:30", category: "study" },
+            { id: 3, name: "যোহর নামাজ", emoji: "🕌", startTime: "13:00", endTime: "14:00", category: "spiritual" },
+            { id: 4, name: "আসর নামাজ", emoji: "🕌", startTime: "16:00", endTime: "17:00", category: "spiritual" },
+            { id: 5, name: "চাকরির প্রস্তুতি", emoji: "💼", startTime: "17:00", endTime: "18:00", category: "work" },
+            { id: 6, name: "মাগরিব নামাজ", emoji: "🕌", startTime: "18:30", endTime: "19:00", category: "spiritual" },
+            { id: 7, name: "ইশা নামাজ", emoji: "🕌", startTime: "20:00", endTime: "20:30", category: "spiritual" },
+            { id: 8, name: "লারাভেল প্র্যাকটিস", emoji: "💻", startTime: "21:00", endTime: "22:00", category: "study" },
+            { id: 9, name: "১১টার মধ্যে ঘুমানো", emoji: "😴", startTime: "23:00", endTime: "07:00", category: "health" },
+            { id: 10, name: "ফোন ব্যবহার ≤ ২ ঘণ্টা", emoji: "📱", startTime: "", endTime: "", category: "personal" },
+            { id: 11, name: "সক্রিয়ভাবে পড়া ও শোনা", emoji: "👂", startTime: "", endTime: "", category: "personal" },
+            { id: 12, name: "বুঝে কথা বলা", emoji: "🗣️", startTime: "", endTime: "", category: "personal" },
+            { id: 13, name: "সময়মতো খাওয়া", emoji: "🍽️", startTime: "08:00", endTime: "09:00", category: "health" },
+            { id: 14, name: "খারাপ অভ্যাস এড়ানো", emoji: "🚫", startTime: "", endTime: "", category: "personal" },
+            { id: 15, name: "ইতিবাচক থাকা", emoji: "😊", startTime: "", endTime: "", category: "personal" }
+        ];
+
+        // হ্যাবিট ট্র্যাকার অ্যাপ্লিকেশন
+        class HabitTracker {
+            constructor() {
+                this.currentDate = new Date();
+                this.viewingDate = new Date();
+                this.habits = [];
+                this.isInitialized = false;
+                
+                // ইভেন্ট লিসেনার বাইন্ড করা
+                this.init = this.init.bind(this);
+                this.toggleHabit = this.toggleHabit.bind(this);
+                this.toggleAllHabits = this.toggleAllHabits.bind(this);
+                this.navigateToPreviousDay = this.navigateToPreviousDay.bind(this);
+                this.navigateToToday = this.navigateToToday.bind(this);
+                this.openAddHabitModal = this.openAddHabitModal.bind(this);
+                this.closeModal = this.closeModal.bind(this);
+                this.openHistoryModal = this.openHistoryModal.bind(this);
+                this.addHabit = this.addHabit.bind(this);
+                this.setupEmojiPicker = this.setupEmojiPicker.bind(this);
+            }
+            
+            // অ্যাপ্লিকেশন ইনিশিয়ালাইজ করা
+            init() {
+                console.log("হ্যাবিট ট্র্যাকার শুরু হচ্ছে...");
+                
+                // লোকাল স্টোরেজ থেকে ডেটা লোড করা
+                this.loadFromLocalStorage();
+                
+                // UI আপডেট করা
+                this.updateUI();
+                
+                // ইভেন্ট লিসেনার সেটআপ করা
+                this.setupEventListeners();
+                
+                // সাফল্য বারান্দা দেখানো (প্রথম বার)
+                if (!localStorage.getItem('habitTrackerFirstRun')) {
+                    setTimeout(() => {
+                        this.showSuccess("হ্যাবিট ট্র্যাকারে স্বাগতম! হ্যাবিট চেক করতে ক্লিক করুন।");
+                        localStorage.setItem('habitTrackerFirstRun', 'true');
+                    }, 1000);
+                }
+                
+                this.isInitialized = true;
+                console.log("হ্যাবিট ট্র্যাকার সফলভাবে শুরু হয়েছে");
+            }
+            
+            // লোকাল স্টোরেজ থেকে ডেটা লোড করা
+            loadFromLocalStorage() {
+                try {
+                    const savedData = localStorage.getItem('habitTrackerData');
+                    
+                    if (savedData) {
+                        const parsed = JSON.parse(savedData);
+                        this.habits = parsed.habits || [];
+                        console.log(`লোকাল স্টোরেজ থেকে ${this.habits.length} টি হ্যাবিট লোড করা হয়েছে`);
+                    } else {
+                        // কোনো ডেটা না থাকলে ডিফল্ট হ্যাবিট লোড করা
+                        this.loadDefaultHabits();
+                    }
+                } catch (error) {
+                    console.error("লোকাল স্টোরেজ থেকে ডেটা লোড করতে সমস্যা:", error);
+                    this.loadDefaultHabits();
+                }
+            }
+            
+            // ডিফল্ট হ্যাবিট লোড করা
+            loadDefaultHabits() {
+                console.log("ডিফল্ট হ্যাবিট লোড করা হচ্ছে...");
+                
+                // ডিফল্ট হ্যাবিট কপি করা
+                this.habits = JSON.parse(JSON.stringify(DEFAULT_HABITS));
+                
+                // প্রতিটি হ্যাবিটের জন্য history অবজেক্ট যোগ করা
+                this.habits.forEach(habit => {
+                    habit.history = {};
+                    
+                    // ডেমো ডেটা: আজকের কিছু হ্যাবিট চেক করা
+                    const todayKey = this.formatDateKey(new Date());
+                    const demoHabits = [1, 3, 6, 9, 12, 14];
+                    
+                    if (demoHabits.includes(habit.id)) {
+                        habit.history[todayKey] = true;
+                    }
+                });
+                
+                // লোকাল স্টোরেজে সেভ করা
+                this.saveToLocalStorage();
+                console.log(`${this.habits.length} টি ডিফল্ট হ্যাবিট লোড করা হয়েছে`);
+            }
+            
+            // লোকাল স্টোরেজে ডেটা সেভ করা
+            saveToLocalStorage() {
+                try {
+                    const data = {
+                        habits: this.habits,
+                        lastUpdated: new Date().toISOString()
+                    };
+                    
+                    localStorage.setItem('habitTrackerData', JSON.stringify(data));
+                    console.log("ডেটা লোকাল স্টোরেজে সেভ করা হয়েছে");
+                } catch (error) {
+                    console.error("ডেটা সেভ করতে সমস্যা:", error);
+                }
+            }
+            
+            // তারিখ কী ফরম্যাট করা
+            formatDateKey(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+            
+            // তারিখ প্রদর্শন করা
+            formatDateDisplay(date) {
+                const isToday = this.isSameDay(date, new Date());
+                const isYesterday = this.isSameDay(date, new Date(Date.now() - 86400000));
+                
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                };
+                
+                // বাংলা মাস এবং দিনের নাম
+                const banglaMonths = [
+                    "জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন",
+                    "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"
+                ];
+                
+                const banglaDays = [
+                    "রবিবার", "সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার", "শুক্রবার", "শনিবার"
+                ];
+                
+                const dayOfWeek = banglaDays[date.getDay()];
+                const dayOfMonth = date.getDate();
+                const month = banglaMonths[date.getMonth()];
+                const year = date.getFullYear();
+                
+                if (isToday) {
+                    return `আজ, ${dayOfMonth} ${month} ${year}`;
+                } else if (isYesterday) {
+                    return `গতকাল, ${dayOfMonth} ${month} ${year}`;
+                } else {
+                    return `${dayOfWeek}, ${dayOfMonth} ${month} ${year}`;
+                }
+            }
+            
+            // দুটি তারিখ একই দিন কিনা চেক করা
+            isSameDay(date1, date2) {
+                return date1.getDate() === date2.getDate() &&
+                       date1.getMonth() === date2.getMonth() &&
+                       date1.getFullYear() === date2.getFullYear();
+            }
+            
+            // টাইম ফরম্যাট করা
+            formatTime(time) {
+                if (!time || time === "") return "";
+                
+                const [hour, minute] = time.split(':');
+                const hourInt = parseInt(hour);
+                
+                if (hourInt === 0) {
+                    return `12:${minute} AM`;
+                } else if (hourInt < 12) {
+                    return `${hourInt}:${minute} AM`;
+                } else if (hourInt === 12) {
+                    return `12:${minute} PM`;
+                } else {
+                    return `${hourInt - 12}:${minute} PM`;
+                }
+            }
+            
+            // টাইম রেঞ্জ পাওয়া
+            getTimeRange(startTime, endTime) {
+                if (!startTime && !endTime) return "";
+                if (startTime && !endTime) return `শুরু: ${this.formatTime(startTime)}`;
+                if (!startTime && endTime) return `শেষ: ${this.formatTime(endTime)}`;
+                return `${this.formatTime(startTime)} - ${this.formatTime(endTime)}`;
+            }
+            
+            // আজকের অগ্রগতি গণনা করা
+            getTodayProgress() {
+                const dateKey = this.formatDateKey(this.viewingDate);
+                let completed = 0;
+                
+                this.habits.forEach(habit => {
+                    if (habit.history && habit.history[dateKey]) {
+                        completed++;
+                    }
+                });
+                
+                const total = this.habits.length;
+                const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+                
+                return { completed, total, percentage };
+            }
+            
+            // বর্তমান স্ট্রীক গণনা করা
+            getCurrentStreak() {
+                let streak = 0;
+                const today = new Date();
+                let checkDate = new Date(today);
+                
+                while (streak < 30) { // সর্বোচ্চ ৩০ দিন
+                    const dateKey = this.formatDateKey(checkDate);
+                    let dayCompleted = 0;
+                    
+                    this.habits.forEach(habit => {
+                        if (habit.history && habit.history[dateKey]) {
+                            dayCompleted++;
+                        }
+                    });
+                    
+                    // যদি কমপক্ষে ১টি হ্যাবিট সম্পন্ন হয়
+                    if (dayCompleted > 0) {
+                        streak++;
+                        checkDate.setDate(checkDate.getDate() - 1);
+                    } else {
+                        break;
+                    }
+                }
+                
+                return streak;
+            }
+            
+            // UI আপডেট করা
+            updateUI() {
+                this.updateDateDisplay();
+                this.updateHabitsList();
+                this.updateStats();
+                this.updateProgressBar();
+            }
+            
+            // তারিখ প্রদর্শন আপডেট করা
+            updateDateDisplay() {
+                const dateDisplay = document.getElementById('current-date-display');
+                const dateLabel = document.getElementById('date-label');
+                
+                if (dateDisplay) {
+                    dateDisplay.textContent = this.formatDateDisplay(this.viewingDate);
+                    
+                    if (dateLabel) {
+                        if (this.isSameDay(this.viewingDate, new Date())) {
+                            dateLabel.textContent = "আজকের তারিখ";
+                        } else {
+                            dateLabel.textContent = "পূর্ববর্তী তারিখ";
+                        }
+                    }
+                }
+            }
+            
+            // হ্যাবিট লিস্ট আপডেট করা
+            updateHabitsList() {
+                const habitsList = document.getElementById('habits-list');
+                if (!habitsList) return;
+                
+                // কন্টেইনার খালি করা
+                habitsList.innerHTML = '';
+                
+                // যদি কোনো হ্যাবিট না থাকে
+                if (this.habits.length === 0) {
+                    habitsList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-clipboard-list"></i>
+                            <h5>কোনো হ্যাবিট নেই</h5>
+                            <p>নতুন হ্যাবিট যোগ করতে উপরের "হ্যাবিট যোগ" বাটনে ক্লিক করুন</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const dateKey = this.formatDateKey(this.viewingDate);
+                
+                // হ্যাবিটগুলো সাজানো (সময় অনুযায়ী)
+                const sortedHabits = [...this.habits].sort((a, b) => {
+                    // যেসব হ্যাবিটের সময় আছে সেগুলো প্রথমে
+                    if (a.startTime && !b.startTime) return -1;
+                    if (!a.startTime && b.startTime) return 1;
+                    if (a.startTime && b.startTime) {
+                        return a.startTime.localeCompare(b.startTime);
+                    }
+                    // সময় না থাকলে নাম অনুযায়ী
+                    return a.name.localeCompare(b.name);
+                });
+                
+                // প্রতিটি হ্যাবিটের জন্য আইটেম তৈরি করা
+                sortedHabits.forEach(habit => {
+                    const isCompleted = habit.history && habit.history[dateKey];
+                    const timeRange = this.getTimeRange(habit.startTime, habit.endTime);
+                    
+                    const habitItem = document.createElement('div');
+                    habitItem.className = 'habit-item';
+                    habitItem.innerHTML = `
+                        <div class="habit-checkbox ${isCompleted ? 'checked' : ''}" 
+                             data-habit-id="${habit.id}">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="habit-details">
+                            <div class="habit-name">
+                                <span class="habit-emoji">${habit.emoji}</span>
+                                <span>${habit.name}</span>
+                            </div>
+                            ${timeRange ? `<div class="habit-time">${timeRange}</div>` : ''}
+                        </div>
+                    `;
+                    
+                    habitsList.appendChild(habitItem);
+                    
+                    // চেকবক্সে ক্লিক ইভেন্ট যোগ করা
+                    const checkbox = habitItem.querySelector('.habit-checkbox');
+                    checkbox.addEventListener('click', () => {
+                        this.toggleHabit(habit.id);
+                    });
+                });
+                
+                // টগল অল বাটনের টেক্সট আপডেট করা
+                const toggleAllBtn = document.getElementById('toggle-all-btn');
+                if (toggleAllBtn) {
+                    const allCompleted = this.areAllHabitsCompleted();
+                    const icon = allCompleted ? 'fa-times' : 'fa-check-double';
+                    const text = allCompleted ? 'সব হ্যাবিট আনচেক' : 'সব হ্যাবিট চেক';
+                    
+                    toggleAllBtn.innerHTML = `<i class="fas ${icon}"></i>${text}`;
+                }
+            }
+            
+            // সব হ্যাবিট কমপ্লিট কিনা চেক করা
+            areAllHabitsCompleted() {
+                const dateKey = this.formatDateKey(this.viewingDate);
+                return this.habits.every(habit => 
+                    habit.history && habit.history[dateKey]
+                );
+            }
+            
+            // স্ট্যাটস আপডেট করা
+            updateStats() {
+                const progress = this.getTodayProgress();
+                
+                document.getElementById('completed-today').textContent = progress.completed;
+                document.getElementById('total-habits').textContent = this.habits.length;
+                document.getElementById('current-streak').textContent = this.getCurrentStreak();
+            }
+            
+            // প্রগ্রেস বার আপডেট করা
+            updateProgressBar() {
+                const progress = this.getTodayProgress();
+                
+                // প্রগ্রেস বার
+                const progressBar = document.getElementById('progress-bar');
+                if (progressBar) {
+                    progressBar.style.width = `${progress.percentage}%`;
+                }
+                
+                // প্রগ্রেস টেক্সট
+                document.getElementById('progress-completed').textContent = `${progress.completed} সম্পন্ন`;
+                document.getElementById('progress-total').textContent = `${progress.total} মোট`;
+                
+                // সাবটাইটেল আপডেট
+                const subtitle = document.getElementById('progress-subtitle');
+                if (subtitle) {
+                    if (progress.percentage === 100) {
+                        subtitle.textContent = 'অভিনন্দন! আপনি সব হ্যাবিট সম্পন্ন করেছেন! 🎉';
+                        subtitle.style.color = 'var(--success-color)';
+                        subtitle.style.fontWeight = '600';
+                    } else if (progress.percentage >= 70) {
+                        subtitle.textContent = 'দারুণ কাজ চলছে! সামনের দিকে এগিয়ে যান!';
+                    } else if (progress.percentage >= 40) {
+                        subtitle.textContent = 'ভালো করছেন, চালিয়ে যান!';
+                    } else if (progress.percentage > 0) {
+                        subtitle.textContent = 'চলুন, আরেকটু চেষ্টা করুন!';
+                    } else {
+                        subtitle.textContent = 'আজকের হ্যাবিট শুরু করুন!';
+                    }
+                }
+            }
+            
+            // হ্যাবিট টগল করা
+            toggleHabit(habitId) {
+                const habit = this.habits.find(h => h.id === habitId);
+                if (!habit) return;
+                
+                const dateKey = this.formatDateKey(this.viewingDate);
+                
+                // history অবজেক্ট নিশ্চিত করা
+                if (!habit.history) {
+                    habit.history = {};
+                }
+                
+                // টগল করা
+                if (habit.history[dateKey]) {
+                    delete habit.history[dateKey];
+                } else {
+                    habit.history[dateKey] = true;
+                }
+                
+                // লোকাল স্টোরেজে সেভ করা
+                this.saveToLocalStorage();
+                
+                // UI আপডেট করা
+                this.updateUI();
+                
+                // অ্যানিমেশন যোগ করা
+                const checkbox = document.querySelector(`[data-habit-id="${habitId}"]`);
+                if (checkbox) {
+                    checkbox.classList.add('pulse');
+                    setTimeout(() => checkbox.classList.remove('pulse'), 300);
+                }
+                
+                // সাফল্য বারান্দা
+                const action = habit.history[dateKey] ? 'সম্পন্ন' : 'অসম্পন্ন';
+                this.showSuccess(`${habit.name} ${action} করা হয়েছে`);
+            }
+            
+            // সব হ্যাবিট টগল করা
+            toggleAllHabits() {
+                const dateKey = this.formatDateKey(this.viewingDate);
+                const allCompleted = this.areAllHabitsCompleted();
+                
+                this.habits.forEach(habit => {
+                    // history অবজেক্ট নিশ্চিত করা
+                    if (!habit.history) {
+                        habit.history = {};
+                    }
+                    
+                    if (allCompleted) {
+                        delete habit.history[dateKey];
+                    } else {
+                        habit.history[dateKey] = true;
+                    }
+                });
+                
+                // লোকাল স্টোরেজে সেভ করা
+                this.saveToLocalStorage();
+                
+                // UI আপডেট করা
+                this.updateUI();
+                
+                // সাফল্য বারান্দা
+                const action = allCompleted ? 'আনচেক' : 'চেক';
+                this.showSuccess(`সব হ্যাবিট ${action} করা হয়েছে`);
+            }
+            
+            // পূর্বের দিনে যাওয়া
+            navigateToPreviousDay() {
+                const newDate = new Date(this.viewingDate);
+                newDate.setDate(newDate.getDate() - 1);
+                this.viewingDate = newDate;
+                this.updateUI();
+                this.showSuccess("গতকালের হ্যাবিট দেখানো হচ্ছে");
+            }
+            
+            // আজকের তারিখে ফেরত যাওয়া
+            navigateToToday() {
+                this.viewingDate = new Date();
+                this.updateUI();
+                this.showSuccess("আজকের হ্যাবিট দেখানো হচ্ছে");
+            }
+            
+            // হ্যাবিট যোগ মোডাল খোলা
+            openAddHabitModal() {
+                // ফর্ম রিসেট করা
+                document.getElementById('add-habit-form').reset();
+                document.getElementById('selected-emoji').value = '📝';
+                
+                // এমোজি পিকার সেটআপ করা
+                this.setupEmojiPicker();
+                
+                // মোডাল দেখানো
+                document.getElementById('add-habit-modal').style.display = 'flex';
+            }
+            
+            // এমোজি পিকার সেটআপ করা
+            setupEmojiPicker() {
+                const emojiOptions = document.querySelectorAll('.emoji-option');
+                const selectedEmojiInput = document.getElementById('selected-emoji');
+                
+                // আগের সিলেকশন সরানো
+                emojiOptions.forEach(option => option.classList.remove('selected'));
+                
+                // প্রতিটি এমোজিতে ক্লিক ইভেন্ট যোগ করা
+                emojiOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        // সব সিলেকশন সরানো
+                        emojiOptions.forEach(opt => opt.classList.remove('selected'));
+                        
+                        // এই এমোজি সিলেক্ট করা
+                        option.classList.add('selected');
+                        selectedEmojiInput.value = option.dataset.emoji;
+                    });
+                });
+                
+                // প্রথম এমোজি ডিফল্ট হিসেবে সিলেক্ট করা
+                if (emojiOptions.length > 0) {
+                    emojiOptions[0].classList.add('selected');
+                }
+            }
+            
+            // নতুন হ্যাবিট যোগ করা
+            addHabit(event) {
+                event.preventDefault();
+                
+                // ফর্ম ডেটা সংগ্রহ করা
+                const name = document.getElementById('habit-name').value.trim();
+                const emoji = document.getElementById('selected-emoji').value;
+                const startTime = document.getElementById('start-time').value;
+                const endTime = document.getElementById('end-time').value;
+                const description = document.getElementById('habit-description').value.trim();
+                
+                // ভ্যালিডেশন
+                if (!name) {
+                    alert("দয়া করে হ্যাবিটের নাম লিখুন");
+                    return;
+                }
+                
+                // নতুন আইডি জেনারেট করা
+                const newId = this.habits.length > 0 
+                    ? Math.max(...this.habits.map(h => h.id)) + 1 
+                    : 1;
+                
+                // নতুন হ্যাবিট তৈরি করা
+                const newHabit = {
+                    id: newId,
+                    name: name,
+                    emoji: emoji || '📝',
+                    startTime: startTime,
+                    endTime: endTime,
+                    description: description,
+                    category: 'personal',
+                    history: {}
+                };
+                
+                // হ্যাবিট লিস্টে যোগ করা
+                this.habits.push(newHabit);
+                
+                // লোকাল স্টোরেজে সেভ করা
+                this.saveToLocalStorage();
+                
+                // UI আপডেট করা
+                this.updateUI();
+                
+                // মোডাল বন্ধ করা
+                this.closeModal('add-habit-modal');
+                
+                // সাফল্য বারান্দা
+                this.showSuccess(`"${name}" হ্যাবিট যোগ করা হয়েছে`);
+            }
+            
+            // ইতিহাস মোডাল খোলা
+            openHistoryModal() {
+                const historyContent = document.getElementById('history-content');
+                
+                // গত ৭ দিনের ইতিহাস তৈরি করা
+                let historyHTML = '<h5 class="mb-3">গত ৭ দিনের ইতিহাস</h5>';
+                
+                for (let i = 0; i < 7; i++) {
+                    const date = new Date();
+                    date.setDate(date.getDate() - i);
+                    
+                    const dateKey = this.formatDateKey(date);
+                    let completed = 0;
+                    
+                    this.habits.forEach(habit => {
+                        if (habit.history && habit.history[dateKey]) {
+                            completed++;
+                        }
+                    });
+                    
+                    const total = this.habits.length;
+                    const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+                    const isToday = i === 0;
+                    const isSelected = this.isSameDay(date, this.viewingDate);
+                    
+                    historyHTML += `
+                        <div class="history-item ${isSelected ? 'border-primary' : ''}" 
+                             style="margin-bottom: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid ${isSelected ? 'var(--primary-color)' : '#e9ecef'}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="fw-bold">${this.formatDateDisplay(date)}</div>
+                                    <div class="small text-muted">${completed}/${total} হ্যাবিট</div>
+                                </div>
+                                <div>
+                                    <span class="badge ${percentage === 100 ? 'bg-success' : percentage >= 70 ? 'bg-primary' : 'bg-warning'}">
+                                        ${percentage}%
+                                    </span>
+                                    ${isToday ? '<span class="badge bg-info ms-1">আজ</span>' : ''}
+                                </div>
+                            </div>
+                            <div class="progress-bar-container mt-2" style="height: 8px;">
+                                <div class="progress-bar-fill" style="width: ${percentage}%"></div>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary w-100 mt-2 view-day-btn" 
+                                    data-date="${dateKey}">
+                                <i class="fas fa-eye me-1"></i>এই দিন দেখুন
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                historyContent.innerHTML = historyHTML;
+                
+                // দিন দেখুন বাটনে ইভেন্ট যোগ করা
+                document.querySelectorAll('.view-day-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const dateKey = e.target.closest('.view-day-btn').dataset.date;
+                        const [year, month, day] = dateKey.split('-').map(Number);
+                        const date = new Date(year, month - 1, day);
+                        
+                        this.viewingDate = date;
+                        this.updateUI();
+                        this.closeModal('history-modal');
+                        this.showSuccess(`${this.formatDateDisplay(date)} এর হ্যাবিট দেখানো হচ্ছে`);
+                    });
+                });
+                
+                // মোডাল দেখানো
+                document.getElementById('history-modal').style.display = 'flex';
+            }
+            
+            // মোডাল বন্ধ করা
+            closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            }
+            
+            // সাফল্য বারান্দা দেখানো
+            showSuccess(message) {
+                const alert = document.getElementById('success-alert');
+                const text = document.getElementById('success-text');
+                
+                if (alert && text) {
+                    text.textContent = message;
+                    alert.style.display = 'flex';
+                    
+                    // ৩ সেকেন্ড পর লুকানো
+                    setTimeout(() => {
+                        alert.style.display = 'none';
+                    }, 3000);
+                }
+            }
+            
+            // ইভেন্ট লিসেনার সেটআপ করা
+            setupEventListeners() {
+                console.log("ইভেন্ট লিসেনার সেটআপ হচ্ছে...");
+                
+                // নেভিগেশন বাটন
+                document.getElementById('prev-day-btn').addEventListener('click', this.navigateToPreviousDay);
+                document.getElementById('today-btn').addEventListener('click', this.navigateToToday);
+                
+                // টগল অল বাটন
+                document.getElementById('toggle-all-btn').addEventListener('click', this.toggleAllHabits);
+                
+                // হ্যাবিট যোগ বাটন
+                document.getElementById('add-habit-btn').addEventListener('click', this.openAddHabitModal);
+                
+                // ইতিহাস বাটন
+                document.getElementById('view-history-btn').addEventListener('click', this.openHistoryModal);
+                
+                // হ্যাবিট যোগ ফর্ম
+                document.getElementById('add-habit-form').addEventListener('submit', this.addHabit);
+                
+                // মোডাল ক্লোজ বাটন
+                document.querySelectorAll('.close-modal').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const modal = btn.closest('.modal-overlay');
+                        if (modal) {
+                            modal.style.display = 'none';
+                        }
+                    });
+                });
+                
+                // মোডালের বাইরে ক্লিক করলে বন্ধ করা
+                document.querySelectorAll('.modal-overlay').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.style.display = 'none';
+                        }
+                    });
+                });
+                
+                // কীবোর্ড শর্টকাট
+                document.addEventListener('keydown', (e) => {
+                    // Left arrow - পূর্বের দিন
+                    if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        this.navigateToPreviousDay();
+                    }
+                    
+                    // T - আজকে
+                    if (e.key === 't' || e.key === 'T') {
+                        e.preventDefault();
+                        this.navigateToToday();
+                    }
+                    
+                    // N - নতুন হ্যাবিট
+                    if (e.key === 'n' || e.key === 'N') {
+                        e.preventDefault();
+                        this.openAddHabitModal();
+                    }
+                    
+                    // A - সব টগল
+                    if (e.key === 'a' || e.key === 'A') {
+                        e.preventDefault();
+                        this.toggleAllHabits();
+                    }
+                    
+                    // H - ইতিহাস
+                    if (e.key === 'h' || e.key === 'H') {
+                        e.preventDefault();
+                        this.openHistoryModal();
+                    }
+                });
+                
+                console.log("সব ইভেন্ট লিসেনার সেটআপ সম্পন্ন");
+            }
+        }
+
+        // অ্যাপ্লিকেশন শুরু করা
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM লোড সম্পন্ন, অ্যাপ্লিকেশন শুরু হচ্ছে...");
+            
+            // হ্যাবিট ট্র্যাকার ইনস্ট্যান্স তৈরি করা
+            window.habitTracker = new HabitTracker();
+            
+            // অ্যাপ্লিকেশন শুরু করা
+            window.habitTracker.init();
+            
+            // ডিবাগ ইনফো
+            console.log("হ্যাবিট ট্র্যাকার সক্রিয়। শর্টকাট: Left Arrow (গতকাল), T (আজ), N (নতুন হ্যাবিট), A (সব টগল), H (ইতিহাস)");
+        });
+
+        // সার্ভিস ওয়ার্কার রেজিস্ট্রেশন (ঐচ্ছিক)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => {
+                    console.log('ServiceWorker রেজিস্ট্রেশন ব্যর্থ: ', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
